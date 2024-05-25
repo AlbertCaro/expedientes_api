@@ -41,6 +41,20 @@ export const actualizarUsuario:RequestHandler = async (req,res)=>{
 
 };
 
+export const obtenerUsuario:RequestHandler = async (req,res)=>{
+    const {id} = req.params;
+    const usuario = await Usuario.findByPk(id);
+    if(!usuario){
+        return res.status(404).json({message:"Usuario no encontrada"});
+    }
+
+    return res.status(200).json({
+        idUsuarios: usuario.idUsuarios,
+        correo: usuario.correo,
+        nombre: usuario.nombre
+    });
+}
+
 export const listarUsuarios:RequestHandler = async (req,res)=>{
     await Usuario.findAll({attributes:{exclude:["password"]}}).then((usuarios)=>{
         return res.status(200).json(usuarios);
